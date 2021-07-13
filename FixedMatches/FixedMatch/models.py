@@ -106,6 +106,7 @@ class MatchDescription(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=200, unique=True)
+    image = models.ImageField(upload_to='blog-images',default = '')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     slug = models.SlugField(default=create_slug_code, blank=False, editable=False)
     intro = models.TextField(default='')
