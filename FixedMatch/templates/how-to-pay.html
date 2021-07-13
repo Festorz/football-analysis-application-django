@@ -1,0 +1,137 @@
+{% extends 'home-page.html'%}
+{% block head_title %}
+How to Pay
+{% endblock %}
+{% block content%}
+<main id="main" class="area-padding">
+    <div id="blog" class="blog-area">
+        <div class="blog-inner area-padding">
+            <div class="blog-overly"></div>
+            <div class="container ">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="section-headline text-center">
+                            <h2>How to Pay</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Start Left Blog -->
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="single-blog">
+
+                            <div class="blog-text">
+                                <h2 class="text-success"> Lipa na mpesa </h2>
+                                <p>
+                                    - Go to M-PESA, then Lipa na M-PESA <br>
+                                    - Select Pay Bill, <br>
+                                    - Enter <b>12345</b> as business number, <br>
+                                    -
+                                </p>
+                            </div>
+
+                        </div>
+                        <!-- Start single blog -->
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="single-blog">
+                            <div class="blog-text">
+                                <h2 class="text-primary"> Pay with PayPal </h2>
+                                <p>
+                                    - Go to M-PESA, then Lipa na M-PESA <br>
+                                    - Select Pay Bill, <br>
+                                    - Enter <b>12345</b> as business number, <br>
+                                    -
+                                </p>
+                            </div>
+
+                        </div>
+                        <!-- Start single blog -->
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="single-blog">
+                            <div class="blog-text">
+                                <h2 class="text-dark"> Skrill </h2>
+                                <p>
+                                    - Go to M-PESA, then Lipa na M-PESA <br>
+                                    - Select Pay Bill, <br>
+                                    - Enter <b>12345</b> as business number, <br>
+                                    -
+                                </p>
+                            </div>
+
+                        </div>
+                        <!-- Start single blog -->
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="single-blog">
+                            <div class="blog-text">
+                                <h2 class="text-warning"> Money Transfer </h2>
+                                <p>
+                                    - Go to M-PESA, then Lipa na M-PESA <br>
+                                    - Select Pay Bill, <br>
+                                    - Enter <b>12345</b> as business number, <br>
+                                    -
+                                </p>
+                            </div>
+
+                        </div>
+                        <!-- Start single blog -->
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="single-blog">
+                            <div class="blog-text">
+                                <h2 class="text-secondary">Money Gram</h2>
+                                <p>
+                                    - Go to M-PESA, then Lipa na M-PESA <br>
+                                    - Select Pay Bill, <br>
+                                    - Enter <b>12345</b> as business number, <br>
+                                    -
+                                </p>
+                            </div>
+
+                        </div>
+                        <!-- Start single blog -->
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="single-blog">
+                            <div class="blog-text">
+                                <h2 class="text-danger"> Airtel Money </h2>
+                                <p>
+                                    - Go to M-PESA, then Lipa na M-PESA <br>
+                                    - Select Pay Bill, <br>
+                                    - Enter <b>12345</b> as business number, <br>
+                                    -
+                                </p>
+                            </div>
+
+                        </div>
+                        <!-- Start single blog -->
+                    </div>
+
+                </div>
+                <div class="row area-padding">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="section-headline text-center">
+                            <h4>Enter your payment code here</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12 aligncenter">
+                        <form method="POST" class="card-body">
+                            {% csrf_token %}
+                            <div>
+                                <div class="md-form ">
+                                    <input type="text" id="payment_code" class="form-control"
+                                           placeholder="Transaction_code" name="payment_code">
+                                    <label for="payment_code" class="">Transaction Code</label>
+                                </div>
+                            </div>
+                            <button class="btn btn-dark btn-lg btn-block" type="submit">Submit Code</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

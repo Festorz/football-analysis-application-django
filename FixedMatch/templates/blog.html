@@ -1,0 +1,130 @@
+{% extends 'home-page.html' %}
+{% block title %}
+<title>Blog</title>
+{% endblock %}
+
+{% block content %}
+  <main id="main" class="area-padding">
+
+    <!-- ======= Blog Page ======= -->
+    <div class="blog-page area-padding">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="page-head-blog">
+               <!-- search option start -->
+               <form>
+                <div class="search-option">
+                  <input type="text" placeholder="Search..." type="search" name="q">
+                  <button class="button" type="submit">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </div>
+              </form>
+              <!-- search option end -->
+              <div class="single-blog-page">
+                <!-- recent start -->
+                <div class="left-blog">
+                  <h4>recent post</h4>
+                  <div class="recent-post">
+                    <!-- start single post -->
+                    {% for post in recent_post%}
+                    <div class="recent-single-post">
+                      <div class="post-img">
+                        <a href="#">
+                          <img src="{{post.image.url}}" alt="">
+                        </a>
+                      </div>
+                      <div class="pst-content">
+                        <p><a href="{% url 'match:post-detail' post.slug %}">{{post.title}}</a></p>
+                      </div>
+                    </div>
+                    {% endfor %}
+                    <!-- End single post -->
+                  </div>
+                </div>
+                <!-- recent end -->
+              </div>
+            </div>
+          </div>
+          <!-- End left sidebar -->
+          <div class="col-md-8 col-sm-8 col-xs-12">
+            <div class="row">
+              <!-- Start single blog -->
+              {% for post in posts %}
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="single-blog">
+                  <div class="single-blog-img">
+                    <a href="{% url 'match:post-detail' post.slug  %}">
+                      <img src="{{post.image.url}}" alt="post image">
+                    </a>
+                  </div>
+                  <div class="blog-meta">
+                    <span class="comments-type">
+                      <i class="fa fa-comment-o"></i>
+                      <a href="{% url 'match:post-detail' post.slug  %}">{{post.comments.all.count}} comments</a>
+                    </span>
+                    <span class="date-type">
+                      <i class="fa fa-calendar"></i>{{post.date_added}}
+                    </span>
+                  </div>
+                  <div class="blog-text">
+                    <h4>
+                      <a href="{% url 'match:post-detail' post.slug  %}">{{post.title}}</a>
+                    </h4>
+                    <p>
+                      {{post.intro}}
+                    </p>
+                  </div>
+                  <span>
+                    <a href="{% url 'match:post-detail' post.slug %}" class="ready-btn">Read more</a>
+                  </span>
+                </div>
+              </div>
+              {% empty %}
+              <div>
+                <p>No posts available currently....</p>
+              </div>
+              {% endfor %}
+              <div class="blog-pagination aligncenter">
+                <ul class="pagination">
+                  {% if posts.has_previous %} 
+                  <li class="page-item">
+                    <a href="?page={{ posts.previous_page_number }}" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">
+                            <span class="ti-arrow-left">&lt;</span>
+                        </span>
+                    </a>
+                </li> 
+                  {% endif %}
+                  {% for num in posts.paginator.page_range %}
+                      {% if posts.number == num %}
+                      <li class="page-item active">
+                          <a href="?page={{ num }}" class="page-link ">{{ num }}</a>
+                      </li>
+                      {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+                      <li class="page-item">
+                          <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+                      </li>
+                      {% endif %}
+                  {% endfor %}
+                  {% if posts.has_next %}
+                  <a href="?page={{ posts.next_page_number }}" class="page-link" aria-label="Next">
+                    <span aria-hidden="true">
+                        <span class="ti-arrow-right">&gt;</span>
+                    </span>
+                  </a>
+                 </li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Blog Page -->
+  </main>
+  <!-- End #main -->
+
+ {% endblock %}

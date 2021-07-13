@@ -1,0 +1,145 @@
+{% extends 'home-page.html'%}
+{% load crispy_forms_tags %}
+{% block content%}
+  <main id="main" class="area-padding">
+
+    <!-- ======= Blog Page ======= -->
+    <div class="blog-page area-padding">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="page-head-blog">
+              <div class="single-blog-page">
+                <div class="left-blog">
+                  <h4>recent post</h4>
+                  <div class="recent-post">
+                    {% for post in recent %}
+                    <!-- start single post -->
+                    <div class="recent-single-post">
+                      <div class="post-img">
+                        <a href="#">
+                          <img src="assets/img/blog/1.jpg" alt="">
+                        </a>
+                      </div>
+                      <div class="pst-content">
+                        <p><a href="{% url 'match:post-detail' post.slug %}"> {{post.title|truncatechars:30}}</a></p>
+                      </div>
+                    </div>
+                    {% endfor %}
+                    <!-- End single post -->
+                  </div>
+                </div>
+                <!-- recent end -->
+              </div>
+            </div>
+          </div>
+          <!-- End left sidebar -->
+          <!-- Start single blog -->
+          <div class="col-md-8 col-sm-8 col-xs-12">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <!-- single-blog start -->
+                <article class="blog-post-wrapper">
+                  <div class="post-thumbnail">
+                    <img src="{{post.image.url}}" alt="post image" />
+                  </div>
+                  <div class="post-information">
+                    <h2>{{post.title}}</h2>
+                    <div class="entry-meta">
+                      <span class="author-meta"><i class="fa fa-user"></i> <a href="#">{{post.author}}</a></span>
+                      <span><i class="fa fa-clock-o"></i> {{post.date_added|timesince}}</span>
+
+                      <span><i class="fa fa-comments-o"></i> <a href="#">{{post.comments.all.count}} comments</a></span>
+                    </div>
+                    <div class="entry-content">
+                      <p>
+                        {{post.body}}
+                       </div>
+                  </div>
+                </article>
+                <div class="clear"></div>
+                <div class="single-post-comments">
+                  <div class="comments-area">
+                    <div class="comments-heading">
+                      <h3>{{post.comments.all.count}} COMMENTS</h3>
+                    </div>
+                    <div class="comments-list">
+                      <ul>
+                        {% for comment in post.comments.all %}
+                        <li class="threaded-comments">
+                          <div class="comments-details">
+                            <div class="comments-list-img">
+                              <img src="assets/img/blog/b02.jpg" alt="post-author">
+                            </div>
+                            <div class="comments-content-wrap">
+                              <span>
+                                <b><a href="#">{{comment.name}}</a></b>
+                                Post author
+                                <span class="post-time">{{comment.date_added}}</span>
+                              </span>
+                              <p>
+                                {{comment.comment}}
+                              </p>
+                              {% empty %}
+                              <p> 
+                                Be the first to comment...
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="comment-respond">
+                    <h3 class="comment-reply-title">Leave a Comment </h3>
+                    <span class="email-notes">Your email address will not be published. Required fields are marked *</span>
+                    <form method="post" action=".">
+                      {% csrf_token %}
+                      {{ form|crispy }}
+                          <input type="submit" value="Post Comment" />
+                        <!-- </div>
+                      </div> -->
+                    </form>
+                    <hr>
+                    <div class="footer-icons">
+                      <ul>
+                          <li>
+                            {{share_string}}
+                              <a href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}">
+                                <i class="fa fa-facebook"></i></a>
+                          </li>
+                          <li>
+                            <a href="https://twitter.com/home?status={{share_string}}%20{{request.build_absolute_uri}}">
+                              <i class="fa fa-twitter"></i>
+                              </a>
+                            </li>
+                          <li>
+                            <a href='https://plus.google.com/share?url={{request.build_absolute_uri}}'><i class="fa fa-google-plus"></i></a>
+                          </li>
+                          <li>
+                            <a href="http://www.reddit.com/submit?url={{request.build_absolute_uri}}&title={{share_string}}"><i class="fa fa-reddit"></i></a>
+                          </li>
+                          <li>
+                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{request.build_absolute_uri}}&title={{post.title}}&summary={{share_string}}&source={{request.build_absolute_uri}}">
+                              <i class="fa fa-linkedin"></i>
+                              </a>
+                            </li>
+                      </ul>
+                  </div>
+                  </div>
+                  <div>
+                    <hr>
+                  </div>
+                
+                </div>
+                <!-- single-blog end -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- End Blog Page -->
+  </main>
+  {% endblock %}
+ 

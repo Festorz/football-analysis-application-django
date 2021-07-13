@@ -1,0 +1,108 @@
+{% extends 'home-page.html'%}
+{% load static %}
+{% block content %}
+<main id="main" class="area-padding">
+
+    <!-- ======= Games Section ======= -->
+    <div class="area-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="well-middle">
+                        <div class="single-well">
+                            <a class="section-headline text-center">
+                                <h2>Correct Scores Predictions for Today</h2>
+                            </a>
+                            <p class="text-center">
+                                {{desc}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% for data in game %}
+            <div class="row area-padding-2">
+                <div class="col-md-12 section-headline text-center">
+                    <h3>{{data.title}}</h3>
+                </div>
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Match</th>
+                            <th scope="col">Premium Odds</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for key, value in data.entry_saved_data.items %}
+                        <tr>
+                            <td>{{key}}</td>
+                            <td>{{value.Time}}</td>
+                            <td>{{value.Date}}</td>
+                            <td>{{value.Match}}</td>
+                            <td>1-2</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">No tips available!</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="row">
+                <!-- single-well start-->
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="well-left">
+                        <div class="single-well">
+                            <a href="#">
+                                <img src="{% static 'assets/about/aia.png' %}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- single-well end-->
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="well-middle">
+                        <div class="single-well">
+                            <a href="#">
+                                <h4 class="sec-head">Premium Tips</h4>
+                            </a>
+                            <p>
+                              
+                            </p>
+                            <ul>
+                                <li>
+                                    <i class="fa fa-check"></i> 1 X 2 Tips
+                                </li>
+                                <li>
+                                    <i class="fa fa-check"></i> GG / NG Tips
+                                </li>
+                                <li>
+                                    <i class="fa fa-check"></i> Correct Scores Predictions
+                                </li>
+                                <li>
+                                    <i class="fa fa-check"></i> Over/ Under 2.5 Predictions
+                                </li>
+                                <li>
+                                    <i class="fa fa-check"></i> Half Time Predictions
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- End col-->
+            </div>
+        </div>
+    </div>
+    <!-- End Games Section -->
+</main>
+{% endblock %}
