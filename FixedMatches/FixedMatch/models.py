@@ -109,12 +109,16 @@ class Post(models.Model):
     image = models.ImageField(upload_to='blog-images',default = '')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     slug = models.SlugField(default=create_slug_code, blank=False, editable=False)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='blogpost_like', blank=True)
     intro = models.TextField(default='')
     body = models.TextField(default='')
     date_added = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
         return self.title
+
+    def number_of_likes(self):
+        return self.likes.count()
 
     class Meta:
         ordering = ['-date_added']
