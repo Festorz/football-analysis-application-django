@@ -47,17 +47,17 @@
                     <h2>{{post.title}}</h2>
                     <div class="entry-meta">
                       <span class="author-meta"><i class="fa fa-user"></i> <a href="#">{{post.author}}</a></span>
-                      <span><i class="fa fa-clock-o"></i> {{post.date_added|timesince}}</span>
-
+                      <span><i class="fa fa-clock-o"></i> {{post.date_added}}</span>
                       <span><i class="fa fa-comments-o"></i> <a href="#">{{post.comments.all.count}} comments</a></span>
+                      <span><i class="fa fa-thumbs-up"></i> <a href="#">{{post.number_of_likes}} like{{number_of_likes|pluralize}}</a></span>
                     </div>
                     <div class="entry-content">
                       <p>
                         {{post.body}}
-                       </div>
+                        </p>
+                    </div>
                   </div>
                 </article>
-                <div class="clear"></div>
                 <div class="single-post-comments">
                   <div class="comments-area">
                     <div class="comments-heading">
@@ -80,10 +80,7 @@
                               <p>
                                 {{comment.comment}}
                               </p>
-                              {% empty %}
-                              <p> 
-                                Be the first to comment...
-                              </p>
+                            
                             </div>
                           </div>
                         </li>
@@ -98,14 +95,27 @@
                       {% csrf_token %}
                       {{ form|crispy }}
                           <input type="submit" value="Post Comment" />
-                        <!-- </div>
-                      </div> -->
                     </form>
                     <hr>
+                    <div>
+                      <form action=""></form>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 col-sm-12 col-12 alignitemcenter">
+                        <p>Like and share</p>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="footer-icons">
+                        <form action="{% url 'match:like-post' post.slug %}" method="post">
+                          {% csrf_token %}
+                          <button class="btn btn-small btn-white" type="submit", value="{{post.slug}}"><i class="fa fa-thumbs-up 2x"></i></button>
+                        </form>
+                      </div>
+                      </div>
+                      <div class="col-md-6">
                     <div class="footer-icons">
                       <ul>
                           <li>
-                            {{share_string}}
                               <a href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}">
                                 <i class="fa fa-facebook"></i></a>
                           </li>
@@ -127,6 +137,8 @@
                             </li>
                       </ul>
                   </div>
+                </div>
+                </div>
                   </div>
                   <div>
                     <hr>

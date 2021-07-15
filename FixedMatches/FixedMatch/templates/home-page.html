@@ -56,15 +56,11 @@
         <nav class="nav-menu d-none d-lg-block">
             <ul>
                 <li class="active"><a href="{% url 'match:home' %}">Home</a></li>
-                <li class="drop-down pr-3"><a href="">Betting Tips</a>
-                    <ul>
-                        {% if user.is_premium %}
-                        <li><a href="{% url 'match:predictions' %}">Premium Betting Tips</a></li>
-                        {% else %}
-                        <li><a href="{% url 'match:pay' %}">Pay to Subscribe!</a></li>
-                        {% endif %}
-                    </ul>
-                </li>
+                {% if user.is_premium %}
+                <li><a href="{% url 'match:predictions' %}">Premium Predictions</a></li>
+                {% else %}
+                <li><a href="{% url 'match:pay' %}">Subscribe!</a></li>
+                {% endif %}
                 <li><a href="{% url 'match:blog' %}">Blog</a></li>
 
                 <!--                <li><a href="#contact">Contact</a></li>-->
@@ -291,6 +287,57 @@
         </div>
     </div>
     <!--    end more descriptions -->
+      <!-- ======= Blog Section ======= -->
+      <div id="blog" class="blog-area">
+        <div class="blog-inner area-padding">
+          <div class="blog-overly"></div>
+          <div class="container ">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="section-headline text-center">
+                  <h2>Latest Blog Updates</h2>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <!-- Start Left Blog -->
+              {% for blog in blog_post %}
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="single-blog">
+                  <div class="single-blog-img">
+                    <a href="{% url 'match:post-detail' blog.slug %}">
+                      <img src="{{blog.image.url}}" alt="">
+                    </a>
+                  </div>
+                  <div class="blog-meta">
+                    <span class="comments-type">
+                      <i class="fa fa-comment-o"></i>
+                      <a href="#">{{blog.comments.all.count}} comments</a>
+                    </span>
+                    <span class="date-type">
+                      <i class="fa fa-calendar"></i>{{blog.date_added}}
+                    </span>
+                  </div>
+                  <div class="blog-text">
+                    <h4>
+                      <a href="{% url 'match:post-detail' blog.slug %}">{{blog.title}}</a>
+                    </h4>
+                    <p>
+                    {{blog.intro}}                 
+                    </p>
+                  </div>
+                  <span>
+                    <a href="{% url 'match:post-detail' blog.slug %}" class="ready-btn">Read more</a>
+                  </span>
+                </div>
+                <!-- Start single blog -->
+              </div>
+              {% endfor %}
+              <!-- End Left Blog-->
+            </div>
+          </div>
+        </div>
+      </div><!-- End Blog Section -->
     <!-- ======= Contact Section ======= -->
     <div id="contact" class="contact-area">
         <div class="contact-inner area-padding">

@@ -64,6 +64,10 @@
                       <i class="fa fa-comment-o"></i>
                       <a href="{% url 'match:post-detail' post.slug  %}">{{post.comments.all.count}} comments</a>
                     </span>
+                     <span class="comments-type">
+                      <i class="fa fa-thumbs-up"></i>
+                      <a href="{% url 'match:post-detail' post.slug  %}">{{post.number_of_likes}} like{{number_of_likes|pluralize}}</a>
+                    </span>
                     <span class="date-type">
                       <i class="fa fa-calendar"></i>{{post.date_added}}
                     </span>

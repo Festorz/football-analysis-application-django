@@ -1,6 +1,6 @@
 import json
 
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from allauth.account.views import SignupView, View
 from FixedMatch.forms import CommentForm, RegistrationForm, CodeForm
@@ -11,7 +11,13 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from .models import User
 from django.core.paginator import Paginator
-from urllib.parse import quote  
+from urllib.parse import quote 
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+ 
+
+
 
 
 # Create your views here.
@@ -37,8 +43,11 @@ def get_predictions(jsonfile):
 
 def home(request):
     games = Match.objects.all().order_by('-pk')
+    blog = Post.objects.all().order_by('-pk')[:3]
+
     data = {
         'game': games,
+        'blog_post':blog
     }
     description = MatchDescription.objects.filter(category='MT')
     if description.exists():
@@ -161,4 +170,10 @@ def post_detail(request, slug):
         })
 
     return render(request, 'blog-details.html', data)
-
+@login_required
+def blog_like(request, slug):
+    post = Post.objects.get(slug=slug)
+    post.likes.add(request.user)
+    post.save()
+    
+    return HttpResponseRedirect(reverse('match:post-detail', args=[str(slug)]))
