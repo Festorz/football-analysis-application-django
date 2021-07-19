@@ -108,7 +108,7 @@
                         <div class="footer-icons">
                         <form action="{% url 'match:like-post' post.slug %}" method="post">
                           {% csrf_token %}
-                          <button class="btn btn-small btn-white" type="submit", value="{{post.slug}}"><i class="fa fa-thumbs-up 2x"></i></button>
+                          <button class="btn btn-small btn-white" type="submit", value="{{post.slug}}"><i class="fa fa-thumbs-up 2x blue"> Like</i></button>
                         </form>
                       </div>
                       </div>

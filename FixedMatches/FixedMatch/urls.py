@@ -8,7 +8,7 @@ urlpatterns = [
     path('betting-tips/', game_predictions, name='predictions'),
     path('signup/', SignupView.as_view(), name='account_signup'),
     path('how-to-pay/', PaymentCode.as_view(), name='pay'),
-    path('<slug>/', post_detail, name='post-detail'),
+    path('blog/<slug>/', post_detail, name='post-detail'),
     path('like/<slug>/', blog_like, name='like-post')
 ]
  
