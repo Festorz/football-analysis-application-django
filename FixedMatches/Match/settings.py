@@ -171,14 +171,15 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+load_dotenv()
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 ACCOUNT_ACTIVATION_DAYS = 7
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = os.getenv('email')
 EMAIL_HOST_PASSWORD = os.getenv('pass')
-EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = 'default from email'
 
 
