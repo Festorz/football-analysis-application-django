@@ -1,5 +1,5 @@
 from django_countries import fields
-from FixedMatch.models import Comment
+from FixedMatch.models import Comment, PaymentCode
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
@@ -42,7 +42,8 @@ class RegistrationForm(UserCreationForm):
 
 
 class CodeForm(forms.Form):
-    payment_code = forms.CharField(required=True, max_length=100)
+    payment_code = forms.CharField(required=True, max_length=300)
+
 
 class CommentForm(forms.ModelForm):
     class Meta:

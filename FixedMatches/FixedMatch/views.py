@@ -1,23 +1,21 @@
 import json
+import datetime
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from allauth.account.views import SignupView, View
 from FixedMatch.forms import CommentForm, RegistrationForm, CodeForm
-from .models import Match, Post, Prediction, MatchDescription
+from .models import Match, Post, Prediction, MatchDescription, PaymentCode
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.contrib import messages
 from .models import User
 from django.core.paginator import Paginator
-from urllib.parse import quote 
+from urllib.parse import quote
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
- 
-
-
 
 
 # Create your views here.
@@ -47,7 +45,7 @@ def home(request):
 
     data = {
         'game': games,
-        'blog_post':blog
+        'blog_post': blog
     }
     description = MatchDescription.objects.filter(category='MT')
     if description.exists():
@@ -79,7 +77,6 @@ def game_predictions(request):
     return render(request, 'betting-tips.html', data)
 
 
-
 def is_valid(values):
     valid = True
     for field in values:
@@ -88,9 +85,9 @@ def is_valid(values):
     return valid
 
 
-class PaymentCode(LoginRequiredMixin, View):
+class TransactionCode(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
-        form = CodeForm()
+        form = CodeForm(self.request.POST)
         data = {
             'form': form
         }
@@ -99,22 +96,24 @@ class PaymentCode(LoginRequiredMixin, View):
     def post(self, *args, **kwargs):
         form = CodeForm(self.request.POST or None)
         user = self.request.user
+        payment = PaymentCode.objects.get(user=user)
         if form.is_valid():
             code = form.cleaned_data.get('payment_code')
             if is_valid(code):
                 code = code
-                print(code)
-                if user.payment_code == '':
-                    user.payment_code = code
-                    user.save()
+                if payment.payment_code == '':
+                    payment.payment_code = code
+                    payment.save()
                 else:
-                    User.objects.filter(username=user).update(
-                        payment_code=code
+                    PaymentCode.objects.filter(user=user).update(
+                        payment_code=code, date_added=datetime.datetime.now()
                     )
+
             messages.info(self.request, 'code submission was successful')
             return redirect('/')
         else:
-            messages.warning(self.request, 'Please fill in your transaction code')
+            messages.warning(
+                self.request, 'Please fill in your transaction code')
             return redirect('match:pay')
 
 
@@ -126,10 +125,9 @@ def blog(request):
 
     recent_posts = Post.objects.all().order_by('pk')[:4]
 
-
     data = {
-        'posts':page_obj,
-        'recent_post':recent_posts,
+        'posts': page_obj,
+        'recent_post': recent_posts,
     }
     query = request.GET.get('q', None)
     if query is not None:
@@ -138,9 +136,8 @@ def blog(request):
         page_obj = paginator.get_page(page_number)
         print(search)
         data.update({
-            'posts':page_obj
+            'posts': page_obj
         })
-
 
     return render(request, 'blog.html', data)
 
@@ -151,7 +148,7 @@ def post_detail(request, slug):
     recent_posts = Post.objects.all().order_by('-pk')[:4]
     data = {
         'post': post,
-        'recent':recent_posts,
+        'recent': recent_posts,
         'share_string': share_string
     }
 
@@ -163,17 +160,19 @@ def post_detail(request, slug):
             comment.post = post
             comment.save()
             return redirect('match:post-detail', slug=post.slug)
-    else: 
+    else:
         form = CommentForm()
         data.update({
-            'form':form
+            'form': form
         })
 
     return render(request, 'blog-details.html', data)
+
+
 @login_required
 def blog_like(request, slug):
     post = Post.objects.get(slug=slug)
     post.likes.add(request.user)
     post.save()
-    
+
     return HttpResponseRedirect(reverse('match:post-detail', args=[str(slug)]))
