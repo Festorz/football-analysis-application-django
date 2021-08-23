@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from allauth.account.views import SignupView, View
 from FixedMatch.forms import CommentForm, RegistrationForm, CodeForm
-from .models import Match, Post, Prediction, MatchDescription, PaymentCode
+from .models import Match, Post, Prediction, MatchDescription
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
@@ -16,6 +16,8 @@ from urllib.parse import quote
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your views here.
@@ -46,6 +48,7 @@ def home(request):
     data = {
         'game': games,
         'blog_post': blog
+
     }
     description = MatchDescription.objects.filter(category='MT')
     if description.exists():
@@ -55,6 +58,14 @@ def home(request):
         data.update({
             'desc': text
         })
+    # try:
+    #     code = PaymentCode.objects.get(user=request.user)
+    #     is_premium = code.is_premium
+    #     data.update({
+    #         'is_premium': is_premium
+    #     })
+    # except ObjectDoesNotExist:
+    #     pass
 
     return render(request, 'home-page.html', data)
 
@@ -96,17 +107,17 @@ class TransactionCode(LoginRequiredMixin, View):
     def post(self, *args, **kwargs):
         form = CodeForm(self.request.POST or None)
         user = self.request.user
-        payment = PaymentCode.objects.get(user=user)
+
         if form.is_valid():
             code = form.cleaned_data.get('payment_code')
             if is_valid(code):
-                code = code
-                if payment.payment_code == '':
-                    payment.payment_code = code
-                    payment.save()
+                user = User.objects.get(username=user)
+                if user.payment_code == '':
+                    user.payment_code = code
+                    user.save()
                 else:
-                    PaymentCode.objects.filter(user=user).update(
-                        payment_code=code, date_added=datetime.datetime.now()
+                    User.objects.filter(username=user).update(
+                        payment_code=code, date_added=timezone.now()
                     )
 
             messages.info(self.request, 'code submission was successful')

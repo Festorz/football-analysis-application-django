@@ -1,5 +1,5 @@
 from django_countries import fields
-from FixedMatch.models import Comment, PaymentCode
+from FixedMatch.models import Comment
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm

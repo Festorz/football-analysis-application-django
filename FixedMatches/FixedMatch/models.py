@@ -57,6 +57,9 @@ class User(PermissionsMixin, AbstractBaseUser):
     first_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
     country = CountryField(multiple=False, null=True, blank=True)
+    payment_code = models.CharField(max_length=300, null=True, blank=True)
+    date_added = models.DateTimeField(auto_now=True)
+    is_premium = models.BooleanField(default=False)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -67,16 +70,19 @@ class User(PermissionsMixin, AbstractBaseUser):
     def __str__(self):
         return self.username
 
+    class Meta:
+        ordering = ['-date_added']
 
-class PaymentCode(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
-    payment_code = models.CharField(max_length=300, null=True, blank=True)
-    date_added = models.DateTimeField(auto_now=True, blank=True, null=True)
-    is_premium = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.user.username
+# class PaymentCode(models.Model):
+    # user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='payments',
+    #                          on_delete=models.CASCADE)
+    # payment_code = models.CharField(max_length=300, null=True, blank=True)
+    # date_added = models.DateTimeField(auto_now=True)
+    # is_premium = models.BooleanField(default=False)
+
+    # def __str__(self):
+    #     return self.user.username
 
 
 class Match(models.Model):
